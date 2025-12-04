@@ -40,7 +40,7 @@ export function ProductsContent({ website }: ProductsContentProps) {
 
         // Remove trailing slash if present
         let apiUrl = website.endsWith("/") ? website.slice(0, -1) : website
-        apiUrl = `${apiUrl}/products.json`
+        apiUrl = `${apiUrl}/products.json?limit=300`
 
         const response = await fetch(apiUrl, {
           headers: {
