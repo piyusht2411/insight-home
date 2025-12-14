@@ -13,7 +13,6 @@ export function PaginationControls({ currentPage, totalPages, onPageChange }: Pa
   const canGoPrev = currentPage > 1
   const canGoNext = currentPage < totalPages
 
-  // Generate page numbers to display
   const pages: (number | string)[] = []
   const maxVisible = 5
 
@@ -22,10 +21,8 @@ export function PaginationControls({ currentPage, totalPages, onPageChange }: Pa
       pages.push(i)
     }
   } else {
-    // Always show first page
     pages.push(1)
 
-    // Calculate start and end of middle range
     let start = Math.max(2, currentPage - 1)
     let end = Math.min(totalPages - 1, currentPage + 1)
 
@@ -35,22 +32,18 @@ export function PaginationControls({ currentPage, totalPages, onPageChange }: Pa
       start = totalPages - 3
     }
 
-    // Add ellipsis if needed
     if (start > 2) {
       pages.push("...")
     }
 
-    // Add middle pages
     for (let i = start; i <= end; i++) {
       pages.push(i)
     }
 
-    // Add ellipsis if needed
     if (end < totalPages - 1) {
       pages.push("...")
     }
 
-    // Always show last page
     pages.push(totalPages)
   }
 

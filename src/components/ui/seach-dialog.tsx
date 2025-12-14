@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -27,16 +26,13 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
       setIsLoading(true)
       let cleanUrl = url.trim()
 
-      // Ensure URL has protocol
       if (!cleanUrl.startsWith("http://") && !cleanUrl.startsWith("https://")) {
         cleanUrl = "https://" + cleanUrl
       }
 
-      // Validate URL format
       new URL(cleanUrl)
 
-      // Redirect to products page with URL parameter
-      router.push(`/products?website=${encodeURIComponent(cleanUrl)}`)
+      router.push(`/onboarding?website=${cleanUrl}`)
       onOpenChange(false)
     } catch (error) {
       console.error("Invalid URL:", error)
@@ -55,9 +51,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-card border-border/50 max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-2xl text-foreground">Analyze Your Website</DialogTitle>
+          <DialogTitle className="text-2xl text-foreground">Connect Your Store</DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Enter your website URL to discover product insights
+            Enter your Shopify or WooCommerce URL to get started
           </DialogDescription>
         </DialogHeader>
 
@@ -66,7 +62,7 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             <Search className="absolute left-3 top-3 w-5 h-5 text-muted-foreground" />
             <Input
               type="text"
-              placeholder="https://example.com"
+              placeholder="https://yourstore.com"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               onKeyDown={handleKeyDown}
@@ -78,9 +74,9 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
           <Button
             type="submit"
             disabled={!url.trim() || isLoading}
-            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12 glow-primary"
+            className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold h-12"
           >
-            {isLoading ? "Loading..." : "Analyze"}
+            {isLoading ? "Connecting..." : "Connect Store"}
           </Button>
         </form>
       </DialogContent>
