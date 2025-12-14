@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -54,21 +53,29 @@ export function DashboardContent({ onProductClick }: DashboardContentProps) {
 
   useEffect(() => {
     const fetchProducts = async () => {
+      if (!website) {
+        setLoading(false);
+        return;
+      }
       try {
+        setLoading(true);
         const response = await fetch(
           `${website}/products.json?limit=100`
         );
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
         setProducts(data.products || []);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setProducts([]);
       } finally {
         setLoading(false);
       }
     };
-
     fetchProducts();
-  }, []);
+  }, [website]); // Added website to deps for refetch on param change
 
   const totalPages = Math.ceil(products.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -156,7 +163,6 @@ export function DashboardContent({ onProductClick }: DashboardContentProps) {
                       </motion.div>
                     ))}
                   </div>
-
                   {totalPages > 1 && (
                     <div className="flex justify-center">
                       <PaginationControls
